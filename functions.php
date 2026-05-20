@@ -719,6 +719,12 @@ add_action( 'wp_footer', function () {
         const $podr2 = $('.podr2');
         const $list  = $podr2.find('.podr-u');
 
+        // Jeśli na stronie nie ma elementów Podróżnika — przerwij od razu.
+        // Bez tego fetchState() wysyłał zbędne zapytanie AJAX na KAŻDEJ stronie.
+        if ( ! $podr.length && ! $podr2.length && ! $('#podroznik').length ) {
+            return;
+        }
+
         function render(state) {
 
             $podr.removeClass('podr-a');
