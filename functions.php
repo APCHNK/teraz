@@ -39,7 +39,7 @@ function parus_enqueue_scripts() {
             get_stylesheet_directory_uri() . '/js/jquery.min.js',
             [],
             '3.7.1',
-            false // ładuj w <head>
+            true // ładuj w stopce — nie blokuje renderowania
         );
         wp_enqueue_script('jquery');
 
@@ -72,6 +72,15 @@ function parus_enqueue_scripts() {
     }
 }
 add_action('wp_enqueue_scripts', 'parus_enqueue_scripts');
+
+// jQuery przeniesiony do stopki (nie blokuje renderowania). Drukujemy go
+// na samym początku wp_footer (priorytet 1), ZANIM zadziałają inline-skrypty
+// motywu w wp_footer (priorytet 10+), żeby globalny `jQuery` był już dostępny.
+// Jeśli jakiś skrypt w <head> wymaga jQuery, WordPress i tak wydrukuje go
+// wcześniej w <head> — wtedy to wywołanie po prostu nic nie zrobi.
+add_action('wp_footer', function() {
+    wp_print_scripts('jquery');
+}, 1);
 
 // ============================================
 // WOOCOMMERCE — ładuj tylko na stronach WooCommerce
