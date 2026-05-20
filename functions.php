@@ -298,6 +298,13 @@ add_action('wp_head', function() {
 
 
 add_action( 'wp_footer', function() {
+    // Nadpisania scrollTo / animate / scrollIntoView blokują przewijanie do
+    // notatek WooCommerce — są potrzebne TYLKO na stronie koszyka i zamówienia.
+    // Na pozostałych stronach pomijamy je, żeby nie spowalniać przewijania
+    // (każde wywołanie scrollTo tworzyło new Error().stack).
+    if ( ! function_exists( 'is_cart' ) || ( ! is_cart() && ! is_checkout() ) ) {
+        return;
+    }
     ?>
     <script>
     (function($) {
