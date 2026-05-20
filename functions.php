@@ -43,32 +43,10 @@ function parus_enqueue_scripts() {
         );
         wp_enqueue_script('jquery');
 
-        wp_enqueue_script('gsap', get_stylesheet_directory_uri() . '/gsap.min.js', ['jquery'], '3.12.5', true);
-        wp_enqueue_script('gsap-scrolltrigger', get_stylesheet_directory_uri() . '/ScrollTrigger.min.js', ['gsap'], '3.12.5', true);
-
-        wp_add_inline_script('gsap-scrolltrigger', "
-            document.addEventListener('DOMContentLoaded', function() {
-                gsap.registerPlugin(ScrollTrigger);
-                ScrollTrigger.defaults({
-                    toggleActions: 'restart pause reverse pause',
-                    scrub: 3,
-                    ease: 'power1'
-                });
-                const showAnim = gsap.from('.header', { 
-                    yPercent: -110,
-                    paused: true,
-                    duration: 0.3
-                }).progress(1);
-                let mm = gsap.matchMedia();
-                mm.add('(min-width: 768px)', () => {
-                    ScrollTrigger.create({
-                        start: 'top -5%',
-                        end: 99999,
-                        toggleClass: {className: 'sa', targets: '.header'},
-                    });
-                });
-            });
-        ");
+        // Animacja nagłówka (przełączanie klasy .sa po przewinięciu).
+        // Wcześniej obsługiwane przez GSAP + ScrollTrigger (~117 KB JS) —
+        // zastąpione lekkim własnym skryptem motywu.
+        wp_enqueue_script('parus-header', get_stylesheet_directory_uri() . '/js/header.js', [], '1.0', true);
     }
 }
 add_action('wp_enqueue_scripts', 'parus_enqueue_scripts');
