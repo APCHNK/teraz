@@ -1385,3 +1385,53 @@ function process_pill_day_after_handler() {
 
     wp_send_json_success(['status' => $status]);
 }
+
+/* ============================================================
+   Dr Teraz — Booknetic Full-Page Layout
+   На сторінках з шорткодом/віджетом [booknetic]:
+   ховає хедер і футер + додає відступи панелі бронювання.
+   Вставити В КІНЕЦЬ functions.php теми.
+   ============================================================ */
+if ( ! function_exists( 'drteraz_is_booknetic_page' ) ) {
+	function drteraz_is_booknetic_page() {
+		static $cache = null;
+		if ( $cache !== null ) {
+			return $cache;
+		}
+		$cache = false;
+		if ( ! is_singular() ) {
+			return $cache;
+		}
+		$post = get_post();
+		if ( ! $post ) {
+			return $cache;
+		}
+		if ( strpos( (string) $post->post_content, '[booknetic' ) !== false ) {
+			$cache = true;
+			return $cache;
+		}
+		$ed = get_post_meta( $post->ID, '_elementor_data', true );
+		if ( $ed && strpos( $ed, '"widgetType":"booknetic"' ) !== false ) {
+			$cache = true;
+		}
+		return $cache;
+	}
+
+	add_filter( 'body_class', function ( $classes ) {
+		if ( drteraz_is_booknetic_page() ) {
+			$classes[] = 'booknetic-fullpage';
+		}
+		return $classes;
+	} );
+
+	add_action( 'wp_head', function () {
+		if ( ! drteraz_is_booknetic_page() ) {
+			return;
+		}
+		echo '<style id="dr-booknetic-fullpage">'
+			. 'body.booknetic-fullpage header.elementor-location-header,'
+			. 'body.booknetic-fullpage footer.elementor-location-footer{display:none !important;}'
+			. 'body.booknetic-fullpage .booknetic_appointment{margin-top:70px !important;margin-bottom:20px !important;}'
+			. '</style>' . "\n";
+	}, 99 );
+}
