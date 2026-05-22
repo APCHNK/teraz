@@ -1431,7 +1431,7 @@ if ( ! function_exists( 'drteraz_is_booknetic_page' ) ) {
 		echo '<style id="dr-booknetic-fullpage">'
 			. 'body.booknetic-fullpage header.elementor-location-header,'
 			. 'body.booknetic-fullpage footer.elementor-location-footer{display:none !important;}'
-			. 'body.booknetic-fullpage .booknetic_appointment{margin-top:70px !important;margin-bottom:20px !important;}'
+			. 'body.booknetic-fullpage .booknetic_appointment{margin-top:70px !important;margin-bottom:40px !important;}'
 			. '</style>' . "\n";
 	}, 99 );
 }
