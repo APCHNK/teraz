@@ -1435,3 +1435,28 @@ if ( ! function_exists( 'drteraz_is_booknetic_page' ) ) {
 			. '</style>' . "\n";
 	}, 99 );
 }
+
+/**
+ * Widget Elementora: Lista szczepień (dynamiczna tabela produktów).
+ * Rejestracja stylów/skryptów + samego widgetu — wyłącznie w motywie.
+ */
+add_action( 'wp_enqueue_scripts', function () {
+	wp_register_style(
+		'tz-vaccine-list',
+		get_stylesheet_directory_uri() . '/css/vaccine-list.css',
+		[],
+		'1.1'
+	);
+	wp_register_script(
+		'tz-vaccine-list',
+		get_stylesheet_directory_uri() . '/js/vaccine-list.js',
+		[],
+		'1.0',
+		true
+	);
+} );
+
+add_action( 'elementor/widgets/register', function ( $widgets_manager ) {
+	require_once get_stylesheet_directory() . '/inc/class-tz-vaccine-list-widget.php';
+	$widgets_manager->register( new \TZ_Vaccine_List_Widget() );
+} );

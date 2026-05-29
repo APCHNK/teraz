@@ -1,0 +1,394 @@
+/* Lista szczepień — widget Elementor (TZ Vaccine List) */
+
+.tz-vac {
+	/* zielony marki strony (Elementor global --c1), z bezpiecznym fallbackiem */
+	--tz-green: var(--c1, #054343);
+	--tz-green-dark: #033333;
+	--tz-cream: #faf4e6;
+	--tz-border: #ececdf;
+	--tz-row-border: #f0f0ea;
+	--tz-ink: #1c1c1c;
+	--tz-muted: #9a9a8e;
+	--tz-ghost-border: #e0e0d6;
+	font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+	color: var(--tz-ink);
+	max-width: 100%;
+	min-width: 0;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+/* Gdy widget jest elementem flex w sekcji Elementora, flex item ma
+   domyślnie min-width:auto i nie zwęża się poniżej min-content zawartości —
+   przez to cała karta wychodziła poza ekran. Pozwalamy się zwężać. */
+.elementor-widget-tz_vaccine_list,
+.elementor-widget-tz_vaccine_list .elementor-widget-container {
+	min-width: 0;
+	max-width: 100%;
+}
+
+.tz-vac *,
+.tz-vac *::before,
+.tz-vac *::after {
+	box-sizing: border-box;
+}
+
+/* ----- Pasek górny: wyszukiwarka + zakładki ----- */
+.tz-vac__bar {
+	display: flex;
+	align-items: center;
+	gap: 28px;
+	flex-wrap: wrap;
+	background: #fff;
+	border: 1px solid var(--tz-border);
+	border-radius: 22px;
+	padding: 18px 26px;
+	margin-bottom: 22px;
+	max-width: 100%;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .03);
+}
+
+.tz-vac__search {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex: 1 1 320px;
+	min-width: 0;
+	padding: 4px 6px;
+}
+
+.tz-vac__search-ic {
+	width: 22px;
+	height: 22px;
+	flex: 0 0 auto;
+	fill: #b7b7ab;
+}
+
+.tz-vac__input,
+.tz-vac input.tz-vac__input[type="search"] {
+	flex: 1 1 auto;
+	width: 100%;
+	min-width: 0;
+	border: 0 !important;
+	outline: 0 !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	border-radius: 0 !important;
+	-webkit-appearance: none;
+	appearance: none;
+	font: inherit;
+	font-size: 18px;
+	line-height: 1.4;
+	color: var(--tz-ink);
+	padding: 6px 0;
+	margin: 0;
+	height: auto;
+}
+
+.tz-vac__input::placeholder {
+	color: var(--tz-muted);
+	opacity: 1;
+}
+
+/* usuń natywny przycisk czyszczenia pola search */
+.tz-vac__input::-webkit-search-decoration,
+.tz-vac__input::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+}
+
+.tz-vac__tabs {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.tz-vac__tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	font: inherit;
+	font-size: 16px;
+	font-weight: 500;
+	color: #5b6b60;
+	padding: 10px 16px;
+	border-radius: 999px;
+	line-height: 1;
+	transition: background .15s ease, color .15s ease;
+	white-space: nowrap;
+}
+
+.tz-vac__tab svg,
+.tz-vac__tab i {
+	font-size: 17px;
+	width: 17px;
+	height: 17px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	fill: currentColor;
+}
+
+.tz-vac__tab:hover {
+	color: var(--tz-green);
+	background: #f4f4ee;
+}
+
+.tz-vac__tab.is-active {
+	background: var(--tz-green);
+	color: #fff;
+	font-weight: 600;
+}
+
+/* ----- Tabela ----- */
+.tz-vac__table {
+	background: #fff;
+	border: 1px solid var(--tz-border);
+	border-radius: 22px;
+	overflow: hidden;
+}
+
+.tz-vac__thead,
+.tz-vac__row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 120px 200px 280px;
+	align-items: center;
+	column-gap: 16px;
+}
+
+.tz-vac__thead {
+	background: var(--tz-cream);
+	padding: 18px 36px;
+}
+
+.tz-vac__th {
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: .09em;
+	text-transform: uppercase;
+	color: #9c9788;
+}
+
+.tz-vac__th--actions {
+	text-align: right;
+}
+
+.tz-vac__row {
+	padding: 20px 36px;
+	border-top: 1px solid var(--tz-row-border);
+}
+
+.tz-vac__rows .tz-vac__row:first-child {
+	border-top: 0;
+}
+
+/* ukrywanie wierszy przez JS (atrybut hidden) — display:grid musi ustąpić */
+.tz-vac__row[hidden],
+.tz-vac__empty[hidden] {
+	display: none !important;
+}
+
+.tz-vac__name {
+	font-size: 19px;
+	font-weight: 500;
+	color: var(--tz-ink);
+}
+
+.tz-vac__doses,
+.tz-vac__price {
+	font-family: ui-monospace, 'DM Mono', 'Roboto Mono', 'Courier New', monospace;
+	font-size: 17px;
+	color: #2b2b2b;
+}
+
+.tz-vac__actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+}
+
+.tz-vac__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	text-decoration: none;
+	font-size: 16px;
+	font-weight: 600;
+	line-height: 1;
+	padding: 13px 26px;
+	border-radius: 999px;
+	transition: background .15s ease, color .15s ease, border-color .15s ease;
+	white-space: nowrap;
+}
+
+.tz-vac__btn--ghost {
+	background: #fff;
+	border: 1px solid var(--tz-ghost-border);
+	/* !important — motyw wymusza kolor linków var(--c1) !important */
+	color: var(--tz-green) !important;
+	font-weight: 500;
+}
+
+.tz-vac__btn--ghost:hover {
+	background: #f6f6f1;
+	border-color: #cfcfc2;
+}
+
+.tz-vac__btn--solid {
+	background: var(--tz-green);
+	border: 1px solid var(--tz-green);
+	color: #fff !important;
+}
+
+.tz-vac__btn--solid:hover {
+	/* hover marki strony: żółte tło + ciemny tekst */
+	background: var(--c2, #ffc52e);
+	border-color: var(--c2, #ffc52e);
+	color: var(--c1, #054343) !important;
+}
+
+/* mobilne etykiety kolumn — ukryte na desktopie */
+.tz-vac__th-m {
+	display: none;
+}
+
+.tz-vac__empty {
+	padding: 32px 36px;
+	color: var(--tz-muted);
+	font-size: 17px;
+}
+
+.tz-vac--empty {
+	padding: 32px;
+	color: var(--tz-muted);
+}
+
+/* ----- Responsywność ----- */
+
+/* Tablet: węższe kolumny liczbowe, akcje pod wierszem, mniejsze paddingi */
+@media (max-width: 1024px) {
+	.tz-vac__thead,
+	.tz-vac__row {
+		grid-template-columns: minmax(0, 1fr) 90px 160px;
+		column-gap: 14px;
+	}
+
+	.tz-vac__row {
+		grid-template-areas:
+			"name doses price"
+			"actions actions actions";
+		row-gap: 14px;
+		padding: 18px 24px;
+	}
+
+	.tz-vac__thead {
+		padding: 16px 24px;
+	}
+
+	.tz-vac__name { grid-area: name; }
+	.tz-vac__doses { grid-area: doses; }
+	.tz-vac__price { grid-area: price; }
+	.tz-vac__actions { grid-area: actions; justify-content: flex-start; }
+
+	.tz-vac__th--actions {
+		display: none;
+	}
+}
+
+/* Bar: pasek wyszukiwania nad zakładkami, zakładki przewijane poziomo */
+@media (max-width: 860px) {
+	.tz-vac__bar {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 14px;
+		padding: 16px 18px;
+	}
+
+	.tz-vac__search {
+		/* w układzie kolumnowym flex-basis 320px działał na wysokość — stąd pusty, wysoki pasek */
+		flex: 0 0 auto;
+		padding: 4px 4px;
+	}
+
+	.tz-vac__tabs {
+		overflow-x: auto;
+		flex-wrap: nowrap;
+		-webkit-overflow-scrolling: touch;
+		gap: 4px;
+		padding-bottom: 4px;
+		/* delikatny margines, by aktywna pigułka nie była ucięta */
+		margin: 0 -2px;
+	}
+
+	.tz-vac__tab {
+		flex: 0 0 auto;
+	}
+
+	.tz-vac__input {
+		font-size: 16px; /* >=16px, by iOS nie zoomował */
+	}
+}
+
+/* Telefon: wiersz jako karta — nazwa, pod nią dawki + cena w jednej linii, akcje na dole */
+@media (max-width: 560px) {
+	.tz-vac__thead {
+		display: none;
+	}
+
+	.tz-vac__row {
+		grid-template-columns: 1fr 1fr;
+		grid-template-areas:
+			"name name"
+			"doses price"
+			"actions actions";
+		row-gap: 10px;
+		column-gap: 12px;
+		padding: 16px 18px;
+	}
+
+	.tz-vac__name {
+		font-size: 17px;
+		line-height: 1;
+	}
+
+	.tz-vac__price {
+		text-align: right;
+	}
+
+	/* na wąskim ekranie liczby nie mogą się łamać (np. „220 zł") */
+	.tz-vac__doses,
+	.tz-vac__price {
+		white-space: nowrap;
+	}
+
+	/* etykieta nad wartością — w pół-kolumnie nie starcza miejsca obok */
+	.tz-vac__th-m {
+		display: block;
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: .08em;
+		text-transform: uppercase;
+		color: var(--tz-muted);
+		margin: 0 0 2px;
+	}
+
+	.tz-vac__actions {
+		gap: 10px;
+	}
+
+	.tz-vac__btn {
+		flex: 1 1 auto;
+		padding: 12px 18px;
+	}
+	.tz-vac__tabs {
+		flex-wrap: wrap;
+	}
+	.tz-vac__input,
+.tz-vac input.tz-vac__input[type="search"]{
+	font-size: 14px;
+}
+}

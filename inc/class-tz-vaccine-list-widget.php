@@ -1,0 +1,579 @@
+<?php
+/**
+ * Elementor widget: Lista szczepień (TZ Vaccine List)
+ *
+ * Dynamiczna tabela produktów z kategorii (domyślnie "szczepienia"):
+ *  - kolumny: Preparat / Dawki / Cena za dawkę / Akcja (Szczegóły + Rezerwuj)
+ *  - wyszukiwarka po nazwie (po stronie klienta)
+ *  - zakładki-filtry tworzone ręcznie (repeater): nazwa + ikona + wybrane produkty
+ *  - przycisk "Rezerwuj" z konfigurowalnym celem (strona produktu / koszyk / własny link)
+ *
+ * Plik motywu — zgodnie z zasadą: zmiany tylko w motywie, nie w pluginach.
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
+
+	public function get_name() {
+		return 'tz_vaccine_list';
+	}
+
+	public function get_title() {
+		return __( 'Lista szczepień', 'teraz' );
+	}
+
+	public function get_icon() {
+		return 'eicon-table';
+	}
+
+	public function get_categories() {
+		return [ 'general' ];
+	}
+
+	public function get_keywords() {
+		return [ 'szczepienia', 'lista', 'tabela', 'preparat', 'vaccine' ];
+	}
+
+	public function get_style_depends() {
+		return [ 'tz-vaccine-list' ];
+	}
+
+	public function get_script_depends() {
+		return [ 'tz-vaccine-list' ];
+	}
+
+	/**
+	 * Lista produktów wybranej kategorii jako opcje do kontrolek Select2.
+	 *
+	 * @param string $category_slug
+	 * @return array id => title
+	 */
+	private function get_product_options( $category_slug = 'szczepienia' ) {
+		// Lista potrzebna jest tylko w panelu edytora (Select2). Na froncie
+		// render czyta zapisane ID, więc nie wykonujemy tu zbędnego zapytania.
+		if ( ! is_admin() ) {
+			return [];
+		}
+		if ( ! function_exists( 'wc_get_product' ) ) {
+			return [];
+		}
+
+		$args = [
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			// tylko realne preparaty (mają liczbę dawek), bez stron-poradników krajów
+			'meta_query'     => [
+				[
+					'key'     => 'liczba_dawek',
+					'value'   => '',
+					'compare' => '!=',
+				],
+			],
+		];
+
+		if ( $category_slug ) {
+			$args['tax_query'] = [
+				[
+					'taxonomy' => 'product_cat',
+					'field'    => 'slug',
+					'terms'    => $category_slug,
+				],
+			];
+		}
+
+		$ids     = get_posts( $args );
+		$options = [];
+		foreach ( $ids as $id ) {
+			$options[ $id ] = get_the_title( $id );
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Lista stron (do wyboru strony rezerwacji). Tylko w panelu edytora.
+	 *
+	 * @return array id => title
+	 */
+	private function get_page_options() {
+		if ( ! is_admin() ) {
+			return [];
+		}
+
+		$pages   = get_posts(
+			[
+				'post_type'      => 'page',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+			]
+		);
+		$options = [ '' => __( '— wybierz stronę —', 'teraz' ) ];
+		foreach ( $pages as $id ) {
+			$options[ $id ] = get_the_title( $id );
+		}
+
+		return $options;
+	}
+
+	protected function register_controls() {
+
+		// ---- Sekcja: Ustawienia ogólne ----
+		$this->start_controls_section(
+			'section_general',
+			[
+				'label' => __( 'Ustawienia ogólne', 'teraz' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'category_slug',
+			[
+				'label'       => __( 'Slug kategorii produktów', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => 'szczepienia',
+				'description' => __( 'Z tej kategorii pobierane są wszystkie wiersze tabeli.', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'only_with_doses',
+			[
+				'label'        => __( 'Tylko produkty z liczbą dawek', 'teraz' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'default'      => 'yes',
+				'description'  => __( 'Pomija strony-poradniki (np. kraje) bez pola "liczba_dawek".', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'strip_prefix',
+			[
+				'label'       => __( 'Usuń przedrostek z nazwy', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => 'Szczepienie',
+				'description' => __( 'Usuwa ten wyraz z początku każdej nazwy (np. "Szczepienie"). Zostaw puste, aby pokazać pełne nazwy.', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'search_placeholder',
+			[
+				'label'   => __( 'Tekst w wyszukiwarce', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'Szukaj szczepienia (np. żółta gorączka, HPV…)', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'all_tab_label',
+			[
+				'label'   => __( 'Nazwa zakładki "wszystkie"', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'Wszystkie', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'all_tab_icon',
+			[
+				'label'   => __( 'Ikona zakładki "wszystkie"', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::ICONS,
+				'default' => [
+					'value'   => 'fas fa-pen',
+					'library' => 'fa-solid',
+				],
+			]
+		);
+
+		$this->add_control(
+			'col_preparat',
+			[
+				'label'   => __( 'Nagłówek: Preparat', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'PREPARAT', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'col_dawki',
+			[
+				'label'   => __( 'Nagłówek: Dawki', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'DAWKI', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'col_cena',
+			[
+				'label'   => __( 'Nagłówek: Cena za dawkę', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'CENA ZA DAWKĘ', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'col_akcja',
+			[
+				'label'   => __( 'Nagłówek: Akcja', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'AKCJA', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'details_label',
+			[
+				'label'   => __( 'Tekst przycisku "Szczegóły"', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'Szczegóły', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'empty_text',
+			[
+				'label'   => __( 'Tekst gdy brak wyników', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'Brak wyników', 'teraz' ),
+			]
+		);
+
+		$this->end_controls_section();
+
+		// ---- Sekcja: Zakładki (filtry) ----
+		$this->start_controls_section(
+			'section_tabs',
+			[
+				'label' => __( 'Zakładki (filtry)', 'teraz' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$repeater = new \Elementor\Repeater();
+
+		$repeater->add_control(
+			'tab_label',
+			[
+				'label'       => __( 'Nazwa zakładki', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => __( 'Nowa zakładka', 'teraz' ),
+				'label_block' => true,
+			]
+		);
+
+		$repeater->add_control(
+			'tab_icon',
+			[
+				'label' => __( 'Ikona', 'teraz' ),
+				'type'  => \Elementor\Controls_Manager::ICONS,
+			]
+		);
+
+		$repeater->add_control(
+			'tab_products',
+			[
+				'label'       => __( 'Produkty w tej zakładce', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SELECT2,
+				'multiple'    => true,
+				'label_block' => true,
+				'options'     => $this->get_product_options( 'szczepienia' ),
+				'description' => __( 'Wybierz produkty, które mają być widoczne po kliknięciu tej zakładki.', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'tabs',
+			[
+				'label'       => __( 'Zakładki', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::REPEATER,
+				'fields'      => $repeater->get_controls(),
+				'default'     => [],
+				'title_field' => '{{{ tab_label }}}',
+			]
+		);
+
+		$this->end_controls_section();
+
+		// ---- Sekcja: Przycisk "Rezerwuj" ----
+		$this->start_controls_section(
+			'section_reserve',
+			[
+				'label' => __( 'Przycisk "Rezerwuj"', 'teraz' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'reserve_label',
+			[
+				'label'   => __( 'Tekst przycisku', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::TEXT,
+				'default' => __( 'Rezerwuj', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'reserve_action',
+			[
+				'label'   => __( 'Akcja po kliknięciu', 'teraz' ),
+				'type'    => \Elementor\Controls_Manager::SELECT,
+				'default' => 'product',
+				'options' => [
+					'product' => __( 'Strona produktu', 'teraz' ),
+					'cart'    => __( 'Dodaj do koszyka', 'teraz' ),
+					'page'    => __( 'Strona rezerwacji', 'teraz' ),
+					'custom'  => __( 'Własny link', 'teraz' ),
+				],
+			]
+		);
+
+		$this->add_control(
+			'reserve_page',
+			[
+				'label'       => __( 'Strona rezerwacji', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SELECT2,
+				'label_block' => true,
+				'options'     => $this->get_page_options(),
+				'condition'   => [ 'reserve_action' => 'page' ],
+			]
+		);
+
+		$this->add_control(
+			'reserve_custom_url',
+			[
+				'label'       => __( 'Własny link', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::URL,
+				'placeholder' => 'https://…',
+				'options'     => [ 'url', 'is_external', 'nofollow' ],
+				'condition'   => [ 'reserve_action' => 'custom' ],
+			]
+		);
+
+		$this->add_control(
+			'reserve_new_tab',
+			[
+				'label'        => __( 'Otwórz w nowej karcie', 'teraz' ),
+				'type'         => \Elementor\Controls_Manager::SWITCHER,
+				'default'      => '',
+				'condition'    => [ 'reserve_action!' => 'cart' ],
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
+	/**
+	 * Wartość kolumny "Dawki" — z meta liczba_dawek.
+	 */
+	/**
+	 * Usuwa zadany przedrostek (np. "Szczepienie") z początku nazwy.
+	 */
+	private function strip_prefix( $title, $prefix ) {
+		$prefix = trim( (string) $prefix );
+		if ( '' === $prefix ) {
+			return $title;
+		}
+		// dopasowanie bez względu na wielkość liter, na początku ciągu
+		$pattern = '/^' . preg_quote( $prefix, '/' ) . '\s*/iu';
+		$result  = preg_replace( $pattern, '', $title, 1 );
+		return ( '' !== trim( (string) $result ) ) ? $result : $title;
+	}
+
+	private function format_doses( $product_id ) {
+		$raw = trim( (string) get_post_meta( $product_id, 'liczba_dawek', true ) );
+		if ( '' === $raw ) {
+			return '';
+		}
+		// Czysta liczba -> "N×"; wartości opisowe (np. "3 lub 4") zostawiamy bez zmian.
+		if ( is_numeric( $raw ) ) {
+			return ( (int) $raw ) . '×';
+		}
+		return $raw;
+	}
+
+	/**
+	 * Wartość kolumny "Cena za dawkę".
+	 */
+	private function format_price( $product ) {
+		$id    = $product->get_id();
+		$price = get_post_meta( $id, 'cena_za_1_dawke', true );
+		if ( '' === $price || null === $price ) {
+			$price = $product->get_price();
+		}
+		if ( '' === $price || null === $price ) {
+			return '';
+		}
+		// Liczba całkowita bez zbędnych zer (np. 229), z dopiskiem "zł".
+		$num = (float) $price;
+		$str = ( floor( $num ) == $num ) ? number_format_i18n( $num, 0 ) : number_format_i18n( $num, 2 );
+		return $str . ' zł';
+	}
+
+	/**
+	 * URL przycisku "Rezerwuj" dla danego produktu.
+	 */
+	private function reserve_url( $product, $settings ) {
+		$action = isset( $settings['reserve_action'] ) ? $settings['reserve_action'] : 'product';
+
+		if ( 'cart' === $action ) {
+			return method_exists( $product, 'add_to_cart_url' ) ? $product->add_to_cart_url() : get_permalink( $product->get_id() );
+		}
+
+		if ( 'page' === $action ) {
+			$page_id = ! empty( $settings['reserve_page'] ) ? (int) $settings['reserve_page'] : 0;
+			$url     = $page_id ? get_permalink( $page_id ) : '';
+			return $url ? $url : '#';
+		}
+
+		if ( 'custom' === $action ) {
+			if ( ! empty( $settings['reserve_custom_url']['url'] ) ) {
+				return $settings['reserve_custom_url']['url'];
+			}
+			return '#';
+		}
+
+		return get_permalink( $product->get_id() );
+	}
+
+	protected function render() {
+		if ( ! function_exists( 'wc_get_product' ) ) {
+			return;
+		}
+
+		$settings = $this->get_settings_for_display();
+		$category = ! empty( $settings['category_slug'] ) ? sanitize_title( $settings['category_slug'] ) : 'szczepienia';
+
+		$args = [
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+			'no_found_rows'  => true,
+		];
+		if ( $category ) {
+			$args['tax_query'] = [
+				[
+					'taxonomy' => 'product_cat',
+					'field'    => 'slug',
+					'terms'    => $category,
+				],
+			];
+		}
+
+		$only_with_doses = isset( $settings['only_with_doses'] ) ? $settings['only_with_doses'] : 'yes';
+		if ( 'yes' === $only_with_doses ) {
+			$args['meta_query'] = [
+				[
+					'key'     => 'liczba_dawek',
+					'value'   => '',
+					'compare' => '!=',
+				],
+			];
+		}
+
+		$query = new WP_Query( $args );
+
+		if ( ! $query->have_posts() ) {
+			echo '<div class="tz-vac tz-vac--empty">' . esc_html( $settings['empty_text'] ) . '</div>';
+			wp_reset_postdata();
+			return;
+		}
+
+		$reserve_label  = isset( $settings['reserve_label'] ) ? $settings['reserve_label'] : __( 'Rezerwuj', 'teraz' );
+		$details_label  = isset( $settings['details_label'] ) ? $settings['details_label'] : __( 'Szczegóły', 'teraz' );
+		$reserve_action = isset( $settings['reserve_action'] ) ? $settings['reserve_action'] : 'product';
+		$reserve_target = ( 'cart' !== $reserve_action && ! empty( $settings['reserve_new_tab'] ) ) ? ' target="_blank" rel="noopener"' : '';
+		$details_target = '';
+
+		?>
+		<div class="tz-vac">
+			<div class="tz-vac__bar">
+				<div class="tz-vac__search">
+					<svg class="tz-vac__search-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 104.47 10.03l4.25 4.25 1.41-1.41-4.25-4.25A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z"/></svg>
+					<input type="search" class="tz-vac__input" placeholder="<?php echo esc_attr( $settings['search_placeholder'] ); ?>" aria-label="<?php echo esc_attr( $settings['search_placeholder'] ); ?>">
+				</div>
+				<div class="tz-vac__tabs" role="tablist">
+					<button type="button" class="tz-vac__tab is-active" data-products="all">
+						<?php
+						if ( ! empty( $settings['all_tab_icon']['value'] ) ) {
+							\Elementor\Icons_Manager::render_icon( $settings['all_tab_icon'], [ 'aria-hidden' => 'true' ] );
+						}
+						?>
+						<span><?php echo esc_html( $settings['all_tab_label'] ); ?></span>
+					</button>
+					<?php
+					if ( ! empty( $settings['tabs'] ) && is_array( $settings['tabs'] ) ) {
+						foreach ( $settings['tabs'] as $tab ) {
+							$ids = ! empty( $tab['tab_products'] ) ? array_map( 'intval', (array) $tab['tab_products'] ) : [];
+							?>
+							<button type="button" class="tz-vac__tab" data-products="<?php echo esc_attr( implode( ',', $ids ) ); ?>">
+								<?php
+								if ( ! empty( $tab['tab_icon']['value'] ) ) {
+									\Elementor\Icons_Manager::render_icon( $tab['tab_icon'], [ 'aria-hidden' => 'true' ] );
+								}
+								?>
+								<span><?php echo esc_html( $tab['tab_label'] ); ?></span>
+							</button>
+							<?php
+						}
+					}
+					?>
+				</div>
+			</div>
+
+			<div class="tz-vac__table">
+				<div class="tz-vac__thead" aria-hidden="true">
+					<span class="tz-vac__th tz-vac__th--name"><?php echo esc_html( $settings['col_preparat'] ); ?></span>
+					<span class="tz-vac__th tz-vac__th--doses"><?php echo esc_html( $settings['col_dawki'] ); ?></span>
+					<span class="tz-vac__th tz-vac__th--price"><?php echo esc_html( $settings['col_cena'] ); ?></span>
+					<span class="tz-vac__th tz-vac__th--actions"><?php echo esc_html( $settings['col_akcja'] ); ?></span>
+				</div>
+				<div class="tz-vac__rows">
+					<?php
+					while ( $query->have_posts() ) {
+						$query->the_post();
+						$product = wc_get_product( get_the_ID() );
+						if ( ! $product ) {
+							continue;
+						}
+						$pid   = $product->get_id();
+						$title = $this->strip_prefix( get_the_title(), isset( $settings['strip_prefix'] ) ? $settings['strip_prefix'] : '' );
+						$doses = $this->format_doses( $pid );
+						$price = $this->format_price( $product );
+						$resv  = $this->reserve_url( $product, $settings );
+						?>
+						<div class="tz-vac__row" data-id="<?php echo esc_attr( $pid ); ?>" data-name="<?php echo esc_attr( wp_strip_all_tags( $title ) ); ?>">
+							<div class="tz-vac__cell tz-vac__name"><?php echo esc_html( $title ); ?></div>
+							<div class="tz-vac__cell tz-vac__doses"><span class="tz-vac__th-m"><?php echo esc_html( $settings['col_dawki'] ); ?></span><?php echo esc_html( $doses ); ?></div>
+							<div class="tz-vac__cell tz-vac__price"><span class="tz-vac__th-m"><?php echo esc_html( $settings['col_cena'] ); ?></span><?php echo esc_html( $price ); ?></div>
+							<div class="tz-vac__cell tz-vac__actions">
+								<a class="tz-vac__btn tz-vac__btn--ghost" href="<?php echo esc_url( get_permalink( $pid ) ); ?>"<?php echo $details_target; ?>><?php echo esc_html( $details_label ); ?></a>
+								<a class="tz-vac__btn tz-vac__btn--solid" href="<?php echo esc_url( $resv ); ?>"<?php echo $reserve_target; ?>><?php echo esc_html( $reserve_label ); ?></a>
+							</div>
+						</div>
+						<?php
+					}
+					?>
+				</div>
+				<div class="tz-vac__empty" hidden><?php echo esc_html( $settings['empty_text'] ); ?></div>
+			</div>
+		</div>
+		<?php
+		wp_reset_postdata();
+	}
+}
