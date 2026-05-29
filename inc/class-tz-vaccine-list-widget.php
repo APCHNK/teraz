@@ -178,6 +178,17 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 		);
 
 		$this->add_control(
+			'filter_city',
+			[
+				'label'       => __( 'Miasto', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SELECT,
+				'default'     => '',
+				'options'     => $this->get_city_options( 'szczepienia' ),
+				'description' => __( 'Pokaż tylko produkty z wybranego miasta (podkategorii kategorii głównej). „Wszystkie miasta” = bez filtra.', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
 			'all_tab_label',
 			[
 				'label'   => __( 'Nazwa zakładki "wszystkie"', 'teraz' ),
@@ -449,6 +460,56 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 		return get_permalink( $product->get_id() );
 	}
 
+	/**
+	 * Mapa miast = podkategorie kategorii głównej (term_id => term).
+	 * Miasto produktu rozpoznajemy po przynależności do jednej z tych podkategorii.
+	 *
+	 * @param string $category_slug slug kategorii głównej (np. "szczepienia")
+	 * @return array term_id => WP_Term
+	 */
+	private function get_city_terms( $category_slug ) {
+		$main = get_term_by( 'slug', $category_slug, 'product_cat' );
+		if ( ! $main || is_wp_error( $main ) ) {
+			return [];
+		}
+		$children = get_terms(
+			[
+				'taxonomy'   => 'product_cat',
+				'parent'     => $main->term_id,
+				'hide_empty' => false,
+			]
+		);
+		if ( is_wp_error( $children ) || empty( $children ) ) {
+			return [];
+		}
+		$map = [];
+		foreach ( $children as $term ) {
+			$map[ $term->term_id ] = $term;
+		}
+		return $map;
+	}
+
+	/**
+	 * Opcje listy miast do kontrolki SELECT (panel edytora).
+	 * "Kraje" pomijamy — to poradniki, nie miasto.
+	 *
+	 * @param string $category_slug slug kategorii głównej
+	 * @return array slug => nazwa (pierwsza pozycja: "" => "Wszystkie miasta")
+	 */
+	private function get_city_options( $category_slug = 'szczepienia' ) {
+		$options = [ '' => __( 'Wszystkie miasta', 'teraz' ) ];
+		if ( ! is_admin() ) {
+			return $options;
+		}
+		foreach ( $this->get_city_terms( $category_slug ) as $term ) {
+			if ( 'kraje' === $term->slug ) {
+				continue;
+			}
+			$options[ $term->slug ] = $term->name;
+		}
+		return $options;
+	}
+
 	protected function render() {
 		if ( ! function_exists( 'wc_get_product' ) ) {
 			return;
@@ -465,14 +526,29 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 			'order'          => 'ASC',
 			'no_found_rows'  => true,
 		];
+		$filter_city = isset( $settings['filter_city'] ) ? sanitize_title( $settings['filter_city'] ) : '';
+
+		$tax_query = [];
 		if ( $category ) {
-			$args['tax_query'] = [
-				[
-					'taxonomy' => 'product_cat',
-					'field'    => 'slug',
-					'terms'    => $category,
-				],
+			$tax_query[] = [
+				'taxonomy' => 'product_cat',
+				'field'    => 'slug',
+				'terms'    => $category,
 			];
+		}
+		// Filtr miasta = podkategoria kategorii głównej (wybrana w panelu Elementora).
+		if ( $filter_city ) {
+			$tax_query[] = [
+				'taxonomy' => 'product_cat',
+				'field'    => 'slug',
+				'terms'    => $filter_city,
+			];
+		}
+		if ( $tax_query ) {
+			if ( count( $tax_query ) > 1 ) {
+				$tax_query['relation'] = 'AND';
+			}
+			$args['tax_query'] = $tax_query;
 		}
 
 		$only_with_doses = isset( $settings['only_with_doses'] ) ? $settings['only_with_doses'] : 'yes';

@@ -1445,13 +1445,13 @@ add_action( 'wp_enqueue_scripts', function () {
 		'tz-vaccine-list',
 		get_stylesheet_directory_uri() . '/css/vaccine-list.css',
 		[],
-		'1.1'
+		'1.2'
 	);
 	wp_register_script(
 		'tz-vaccine-list',
 		get_stylesheet_directory_uri() . '/js/vaccine-list.js',
 		[],
-		'1.0',
+		'1.1',
 		true
 	);
 } );
