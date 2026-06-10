@@ -1445,7 +1445,7 @@ add_action( 'wp_enqueue_scripts', function () {
 		'tz-vaccine-list',
 		get_stylesheet_directory_uri() . '/css/vaccine-list.css',
 		[],
-		'1.3'
+		'1.4'
 	);
 	wp_register_script(
 		'tz-vaccine-list',

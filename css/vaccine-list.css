@@ -130,9 +130,11 @@
 	padding: 11px 16px;
 }
 
-.tz-vac__suggest-item:hover {
-	background: #f4f4ee;
-	color: var(--tz-green);
+.tz-vac .tz-vac__suggest-item:hover,
+.tz-vac .tz-vac__suggest-item:focus {
+	background: #f4f4ee !important;
+	color: var(--tz-green) !important;
+	text-decoration: none !important;
 }
 
 .tz-vac__chips {
@@ -159,15 +161,22 @@
 	transition: background .15s ease, color .15s ease, border-color .15s ease;
 }
 
-.tz-vac__chip:hover {
-	color: var(--tz-green);
-	border-color: var(--tz-green);
+/* !important: globalny styl motywu ustawia button:hover { background:#c36 }
+   (różowy) — musimy go przebić dla wszystkich przycisków widgetu */
+.tz-vac .tz-vac__chip:hover,
+.tz-vac .tz-vac__chip:focus {
+	background: #f4f4ee !important;
+	color: var(--tz-green) !important;
+	border-color: var(--tz-green) !important;
+	text-decoration: none !important;
 }
 
-.tz-vac__chip.is-active {
-	background: var(--tz-green);
-	border-color: var(--tz-green);
-	color: #fff;
+.tz-vac .tz-vac__chip.is-active,
+.tz-vac .tz-vac__chip.is-active:hover,
+.tz-vac .tz-vac__chip.is-active:focus {
+	background: var(--tz-green) !important;
+	border-color: var(--tz-green) !important;
+	color: #fff !important;
 }
 
 @media (max-width: 767px) {
@@ -213,14 +222,18 @@
 	fill: currentColor;
 }
 
-.tz-vac__tab:hover {
-	color: var(--tz-green);
-	background: #f4f4ee;
+.tz-vac .tz-vac__tab:hover,
+.tz-vac .tz-vac__tab:focus {
+	color: var(--tz-green) !important;
+	background: #f4f4ee !important;
+	text-decoration: none !important;
 }
 
-.tz-vac__tab.is-active {
-	background: var(--tz-green);
-	color: #fff;
+.tz-vac .tz-vac__tab.is-active,
+.tz-vac .tz-vac__tab.is-active:hover,
+.tz-vac .tz-vac__tab.is-active:focus {
+	background: var(--tz-green) !important;
+	color: #fff !important;
 	font-weight: 600;
 }
 
