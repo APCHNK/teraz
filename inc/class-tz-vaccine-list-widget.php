@@ -304,6 +304,49 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 
 		$this->end_controls_section();
 
+		// ---- Sekcja: Wyszukiwarka krajów ----
+		$this->start_controls_section(
+			'section_country',
+			[
+				'label' => __( 'Wyszukiwarka krajów', 'teraz' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'country_search',
+			[
+				'label'       => __( 'Szukaj po kraju', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SWITCHER,
+				'default'     => '',
+				'description' => __( 'Drugie pole wyszukiwania: filtruje szczepienia po kraju podróży (pole „kraje" produktu) z podpowiedziami podczas pisania.', 'teraz' ),
+			]
+		);
+
+		$this->add_control(
+			'country_placeholder',
+			[
+				'label'     => __( 'Tekst w polu kraju', 'teraz' ),
+				'type'      => \Elementor\Controls_Manager::TEXT,
+				'default'   => __( 'Szukaj po nazwie kraju…', 'teraz' ),
+				'condition' => [ 'country_search' => 'yes' ],
+			]
+		);
+
+		$this->add_control(
+			'country_presets',
+			[
+				'label'       => __( 'Szybki wybór (po przecinku)', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'default'     => 'Tajlandia, Kenia, Wietnam',
+				'label_block' => true,
+				'description' => __( 'Przyciski obok wyszukiwarki — kliknięcie od razu filtruje. Zostaw puste, aby ukryć.', 'teraz' ),
+				'condition'   => [ 'country_search' => 'yes' ],
+			]
+		);
+
+		$this->end_controls_section();
+
 		// ---- Sekcja: Zakładki (filtry) ----
 		$this->start_controls_section(
 			'section_tabs',
@@ -676,6 +719,26 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 
 		$tabs_source = isset( $settings['tabs_source'] ) ? $settings['tabs_source'] : 'manual';
 
+		// Wyszukiwarka krajów: kraje produktu z meta kraje_upsell (mapa kraj => true).
+		$country_search  = ! empty( $settings['country_search'] );
+		$country_presets = [];
+		$all_countries   = [];
+		if ( $country_search ) {
+			foreach ( $query->posts as $p ) {
+				$kraje = get_post_meta( $p->ID, 'kraje_upsell', true );
+				if ( is_array( $kraje ) ) {
+					foreach ( array_keys( $kraje ) as $k ) {
+						$all_countries[ $k ] = true;
+					}
+				}
+			}
+			$all_countries = array_keys( $all_countries );
+			sort( $all_countries, SORT_LOCALE_STRING );
+			if ( ! empty( $settings['country_presets'] ) ) {
+				$country_presets = array_filter( array_map( 'trim', explode( ',', $settings['country_presets'] ) ) );
+			}
+		}
+
 		// Zakładki w trybie "filters": z repeatera, a gdy pusty - po jednej
 		// dla każdej wartości pola "filtry" występującej w produktach.
 		$filter_tabs = [];
@@ -719,6 +782,21 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 					<svg class="tz-vac__search-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 104.47 10.03l4.25 4.25 1.41-1.41-4.25-4.25A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z"/></svg>
 					<input type="search" class="tz-vac__input" placeholder="<?php echo esc_attr( $settings['search_placeholder'] ); ?>" aria-label="<?php echo esc_attr( $settings['search_placeholder'] ); ?>">
 				</div>
+				<?php if ( $country_search ) : ?>
+				<div class="tz-vac__search tz-vac__search--country">
+					<svg class="tz-vac__search-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm7.93 9h-3.02a15.7 15.7 0 00-1.5-6.06A8.02 8.02 0 0119.93 11zM12 4.04c.96 1.32 1.93 3.7 2.18 6.96H9.82c.25-3.26 1.22-5.64 2.18-6.96zM4.07 13h3.02c.18 2.3.7 4.38 1.5 6.06A8.02 8.02 0 014.07 13zm3.02-2H4.07a8.02 8.02 0 014.52-6.06A15.7 15.7 0 007.09 11zM12 19.96c-.96-1.32-1.93-3.7-2.18-6.96h4.36c-.25 3.26-1.22 5.64-2.18 6.96zm3.41-.9c.8-1.68 1.32-3.76 1.5-6.06h3.02a8.02 8.02 0 01-4.52 6.06z"/></svg>
+					<input type="search" class="tz-vac__input tz-vac__input--country" placeholder="<?php echo esc_attr( $settings['country_placeholder'] ); ?>" aria-label="<?php echo esc_attr( $settings['country_placeholder'] ); ?>" autocomplete="off">
+					<div class="tz-vac__suggest" hidden></div>
+				</div>
+				<?php if ( $country_presets ) : ?>
+				<div class="tz-vac__chips">
+					<?php foreach ( $country_presets as $chip ) : ?>
+					<button type="button" class="tz-vac__chip" data-country="<?php echo esc_attr( $chip ); ?>"><?php echo esc_html( $chip ); ?></button>
+					<?php endforeach; ?>
+				</div>
+				<?php endif; ?>
+				<script type="application/json" class="tz-vac__countries"><?php echo wp_json_encode( $all_countries ); ?></script>
+				<?php endif; ?>
 				<div class="tz-vac__tabs" role="tablist">
 					<button type="button" class="tz-vac__tab is-active" data-products="all">
 						<?php
@@ -782,8 +860,13 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 						$price = $this->format_price( $product );
 						$resv  = $this->reserve_url( $product, $settings );
 						$row_filters = array_filter( array_map( 'trim', (array) get_post_meta( $pid, 'filtry', true ) ) );
+						$row_kraje   = '';
+						if ( $country_search ) {
+							$kraje_meta = get_post_meta( $pid, 'kraje_upsell', true );
+							$row_kraje  = is_array( $kraje_meta ) ? implode( '|', array_keys( $kraje_meta ) ) : '';
+						}
 						?>
-						<div class="tz-vac__row" data-id="<?php echo esc_attr( $pid ); ?>" data-name="<?php echo esc_attr( wp_strip_all_tags( $title ) ); ?>" data-filters="<?php echo esc_attr( implode( '|', $row_filters ) ); ?>">
+						<div class="tz-vac__row" data-id="<?php echo esc_attr( $pid ); ?>" data-name="<?php echo esc_attr( wp_strip_all_tags( $title ) ); ?>" data-filters="<?php echo esc_attr( implode( '|', $row_filters ) ); ?>"<?php echo $country_search ? ' data-kraje="' . esc_attr( $row_kraje ) . '"' : ''; ?>>
 							<div class="tz-vac__cell tz-vac__name"><?php echo esc_html( $title ); ?></div>
 							<div class="tz-vac__cell tz-vac__doses"><span class="tz-vac__th-m"><?php echo esc_html( $settings['col_dawki'] ); ?></span><?php echo esc_html( $doses ); ?></div>
 							<div class="tz-vac__cell tz-vac__price"><span class="tz-vac__th-m"><?php echo esc_html( $settings['col_cena'] ); ?></span><?php echo esc_html( $price ); ?></div>

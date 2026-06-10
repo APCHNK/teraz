@@ -96,6 +96,87 @@
 	-webkit-appearance: none;
 }
 
+/* ----- Wyszukiwarka krajów ----- */
+.tz-vac__search--country {
+	position: relative;
+	border-left: 1px solid var(--tz-border);
+	padding-left: 18px;
+}
+
+.tz-vac__suggest {
+	position: absolute;
+	top: calc(100% + 8px);
+	left: 0;
+	right: 0;
+	z-index: 30;
+	background: #fff;
+	border: 1px solid var(--tz-border);
+	border-radius: 14px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, .10);
+	max-height: 320px;
+	overflow-y: auto;
+}
+
+.tz-vac__suggest-item {
+	display: block;
+	width: 100%;
+	text-align: left;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	font: inherit;
+	font-size: 16px;
+	color: var(--tz-ink);
+	padding: 11px 16px;
+}
+
+.tz-vac__suggest-item:hover {
+	background: #f4f4ee;
+	color: var(--tz-green);
+}
+
+.tz-vac__chips {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.tz-vac__chip {
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid var(--tz-ghost-border);
+	background: #fff;
+	cursor: pointer;
+	font: inherit;
+	font-size: 15px;
+	font-weight: 500;
+	color: #5b6b60;
+	padding: 9px 16px;
+	border-radius: 999px;
+	line-height: 1;
+	white-space: nowrap;
+	transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.tz-vac__chip:hover {
+	color: var(--tz-green);
+	border-color: var(--tz-green);
+}
+
+.tz-vac__chip.is-active {
+	background: var(--tz-green);
+	border-color: var(--tz-green);
+	color: #fff;
+}
+
+@media (max-width: 767px) {
+	.tz-vac__search--country {
+		border-left: 0;
+		padding-left: 6px;
+	}
+}
+
 .tz-vac__tabs {
 	display: flex;
 	align-items: center;
