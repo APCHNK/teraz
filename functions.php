@@ -1460,3 +1460,8 @@ add_action( 'elementor/widgets/register', function ( $widgets_manager ) {
 	require_once get_stylesheet_directory() . '/inc/class-tz-vaccine-list-widget.php';
 	$widgets_manager->register( new \TZ_Vaccine_List_Widget() );
 } );
+
+// Import oferty z xlsx (Narzędzia -> Import oferty (TZ)) - tylko w adminie.
+if ( is_admin() ) {
+	require_once get_stylesheet_directory() . '/inc/tz-offer-import.php';
+}
