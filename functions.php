@@ -1465,3 +1465,45 @@ add_action( 'elementor/widgets/register', function ( $widgets_manager ) {
 if ( is_admin() ) {
 	require_once get_stylesheet_directory() . '/inc/tz-offer-import.php';
 }
+
+/**
+ * Booknetic preselect: na stronach miast szczepień (/szczepienia/{miasto})
+ * wszystkie linki do /rezerwuj/ dostają parametry preselect, które Booknetic
+ * czyta z URL (?location= i ?service= - patrz BookneticShortcode).
+ *
+ * Łódź i Gdańsk mają po jednej placówce -> preselect lokalizacji + usługi;
+ * Warszawa i Poznań mają kilka placówek -> preselect tylko usługi.
+ */
+function tz_booknetic_preselect_params() {
+	if ( ! is_singular( 'product' ) ) {
+		return [];
+	}
+	$map = [
+		'lodz'     => [ 'location' => 3, 'service' => 17 ], // Łódź Śródmieście / Szczepienie z konsultacją
+		'gdansk'   => [ 'location' => 7, 'service' => 17 ], // Gdańsk Morena / Szczepienie z konsultacją
+		'warszawa' => [ 'service' => 12 ],                  // Szczepienie wraz z konsultacją
+		'poznan'   => [ 'service' => 22 ],                  // Szczepienie w Poznaniu
+	];
+	$post = get_queried_object();
+	return ( $post && isset( $post->post_name, $map[ $post->post_name ] ) ) ? $map[ $post->post_name ] : [];
+}
+
+function tz_booknetic_preselect_rewrite( $content ) {
+	$params = tz_booknetic_preselect_params();
+	if ( ! $params || ! is_string( $content ) || strpos( $content, 'rezerwuj' ) === false ) {
+		return $content;
+	}
+	return preg_replace_callback(
+		'~href=("|\')([^"\']*/rezerwuj/?[^"\']*)\1~i',
+		function ( $m ) use ( $params ) {
+			$url = html_entity_decode( $m[2] );
+			foreach ( $params as $key => $value ) {
+				$url = add_query_arg( $key, $value, $url );
+			}
+			return 'href=' . $m[1] . esc_url( $url ) . $m[1];
+		},
+		$content
+	);
+}
+add_filter( 'the_content', 'tz_booknetic_preselect_rewrite', 99 );
+add_filter( 'elementor/frontend/the_content', 'tz_booknetic_preselect_rewrite', 99 );
