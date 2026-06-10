@@ -14,9 +14,15 @@
 		var empty = root.querySelector( '.tz-vac__empty' );
 
 		var activeIds = null; // null = wszystkie produkty
+		var activeFilter = null; // zakładka z data-filter (pole "filtry" produktu)
 
 		function normalize( s ) {
 			return ( s || '' ).toString().toLowerCase().trim();
+		}
+
+		function rowFilters( row ) {
+			var raw = row.getAttribute( 'data-filters' );
+			return raw ? raw.split( '|' ) : [];
 		}
 
 		function apply() {
@@ -27,7 +33,12 @@
 				var id = row.getAttribute( 'data-id' );
 				var name = normalize( row.getAttribute( 'data-name' ) );
 
-				var inTab = activeIds === null || activeIds.indexOf( id ) !== -1;
+				var inTab;
+				if ( activeFilter !== null ) {
+					inTab = rowFilters( row ).indexOf( activeFilter ) !== -1;
+				} else {
+					inTab = activeIds === null || activeIds.indexOf( id ) !== -1;
+				}
 				var inSearch = term === '' || name.indexOf( term ) !== -1;
 				var show = inTab && inSearch;
 
@@ -49,10 +60,16 @@
 				} );
 				tab.classList.add( 'is-active' );
 
+				var filter = tab.getAttribute( 'data-filter' );
 				var data = tab.getAttribute( 'data-products' );
-				if ( ! data || data === 'all' ) {
+				if ( filter ) {
+					activeFilter = filter;
+					activeIds = null;
+				} else if ( ! data || data === 'all' ) {
+					activeFilter = null;
 					activeIds = null;
 				} else {
+					activeFilter = null;
 					activeIds = data.split( ',' ).map( function ( s ) {
 						return s.trim();
 					} ).filter( Boolean );

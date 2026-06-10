@@ -99,6 +99,45 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
+	 * Wartości pola "filtry" (z importu oferty) jako opcje SELECT.
+	 * Tylko w panelu edytora.
+	 *
+	 * @param string $category_slug
+	 * @return array wartość => wartość
+	 */
+	private function get_filter_options( $category_slug = 'szczepienia' ) {
+		if ( ! is_admin() ) {
+			return [];
+		}
+		$ids = get_posts( [
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+			'meta_query'     => [ [ 'key' => 'filtry', 'compare' => 'EXISTS' ] ],
+			'tax_query'      => $category_slug ? [
+				[
+					'taxonomy' => 'product_cat',
+					'field'    => 'slug',
+					'terms'    => $category_slug,
+				],
+			] : [],
+		] );
+		$options = [];
+		foreach ( $ids as $id ) {
+			foreach ( (array) get_post_meta( $id, 'filtry', true ) as $f ) {
+				$f = trim( (string) $f );
+				if ( '' !== $f ) {
+					$options[ $f ] = $f;
+				}
+			}
+		}
+		ksort( $options );
+		return $options;
+	}
+
+	/**
 	 * Lista stron (do wyboru strony rezerwacji). Tylko w panelu edytora.
 	 *
 	 * @return array id => title
@@ -274,6 +313,64 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 			]
 		);
 
+		$this->add_control(
+			'tabs_source',
+			[
+				'label'       => __( 'Źródło zakładek', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SELECT,
+				'default'     => 'manual',
+				'options'     => [
+					'manual'  => __( 'Ręcznie (wybór produktów)', 'teraz' ),
+					'filters' => __( 'Automatycznie (pole „filtry” produktu)', 'teraz' ),
+				],
+				'description' => __( 'Pole „filtry” pochodzi z importu oferty (Podróżne / HPV / Dla dzieci / Sezonowe) — produkty same trafiają do zakładek.', 'teraz' ),
+			]
+		);
+
+		// Zakładki automatyczne: filtr + opcjonalna nazwa i ikona.
+		$filter_repeater = new \Elementor\Repeater();
+
+		$filter_repeater->add_control(
+			'tab_filter',
+			[
+				'label'       => __( 'Filtr', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SELECT,
+				'options'     => $this->get_filter_options( 'szczepienia' ),
+				'label_block' => true,
+			]
+		);
+
+		$filter_repeater->add_control(
+			'tab_label',
+			[
+				'label'       => __( 'Nazwa zakładki (opcjonalnie)', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::TEXT,
+				'placeholder' => __( 'Domyślnie: nazwa filtra', 'teraz' ),
+				'label_block' => true,
+			]
+		);
+
+		$filter_repeater->add_control(
+			'tab_icon',
+			[
+				'label' => __( 'Ikona', 'teraz' ),
+				'type'  => \Elementor\Controls_Manager::ICONS,
+			]
+		);
+
+		$this->add_control(
+			'filter_tabs',
+			[
+				'label'       => __( 'Zakładki z filtrów', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::REPEATER,
+				'fields'      => $filter_repeater->get_controls(),
+				'default'     => [],
+				'title_field' => '{{{ tab_label || tab_filter }}}',
+				'description' => __( 'Zostaw puste, aby pokazać zakładkę dla każdego filtra występującego w produktach.', 'teraz' ),
+				'condition'   => [ 'tabs_source' => 'filters' ],
+			]
+		);
+
 		$repeater = new \Elementor\Repeater();
 
 		$repeater->add_control(
@@ -314,6 +411,7 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 				'fields'      => $repeater->get_controls(),
 				'default'     => [],
 				'title_field' => '{{{ tab_label }}}',
+				'condition'   => [ 'tabs_source' => 'manual' ],
 			]
 		);
 
@@ -576,6 +674,44 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 		$reserve_target = ( 'cart' !== $reserve_action && ! empty( $settings['reserve_new_tab'] ) ) ? ' target="_blank" rel="noopener"' : '';
 		$details_target = '';
 
+		$tabs_source = isset( $settings['tabs_source'] ) ? $settings['tabs_source'] : 'manual';
+
+		// Zakładki w trybie "filters": z repeatera, a gdy pusty - po jednej
+		// dla każdej wartości pola "filtry" występującej w produktach.
+		$filter_tabs = [];
+		if ( 'filters' === $tabs_source ) {
+			if ( ! empty( $settings['filter_tabs'] ) && is_array( $settings['filter_tabs'] ) ) {
+				foreach ( $settings['filter_tabs'] as $tab ) {
+					if ( empty( $tab['tab_filter'] ) ) {
+						continue;
+					}
+					$filter_tabs[] = [
+						'filter' => $tab['tab_filter'],
+						'label'  => ! empty( $tab['tab_label'] ) ? $tab['tab_label'] : $tab['tab_filter'],
+						'icon'   => isset( $tab['tab_icon'] ) ? $tab['tab_icon'] : [],
+					];
+				}
+			} else {
+				$seen = [];
+				foreach ( $query->posts as $p ) {
+					foreach ( (array) get_post_meta( $p->ID, 'filtry', true ) as $f ) {
+						$f = trim( (string) $f );
+						if ( '' !== $f ) {
+							$seen[ $f ] = true;
+						}
+					}
+				}
+				ksort( $seen );
+				foreach ( array_keys( $seen ) as $f ) {
+					$filter_tabs[] = [
+						'filter' => $f,
+						'label'  => $f,
+						'icon'   => [],
+					];
+				}
+			}
+		}
+
 		?>
 		<div class="tz-vac">
 			<div class="tz-vac__bar">
@@ -593,7 +729,20 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 						<span><?php echo esc_html( $settings['all_tab_label'] ); ?></span>
 					</button>
 					<?php
-					if ( ! empty( $settings['tabs'] ) && is_array( $settings['tabs'] ) ) {
+					if ( 'filters' === $tabs_source ) {
+						foreach ( $filter_tabs as $tab ) {
+							?>
+							<button type="button" class="tz-vac__tab" data-filter="<?php echo esc_attr( $tab['filter'] ); ?>">
+								<?php
+								if ( ! empty( $tab['icon']['value'] ) ) {
+									\Elementor\Icons_Manager::render_icon( $tab['icon'], [ 'aria-hidden' => 'true' ] );
+								}
+								?>
+								<span><?php echo esc_html( $tab['label'] ); ?></span>
+							</button>
+							<?php
+						}
+					} elseif ( ! empty( $settings['tabs'] ) && is_array( $settings['tabs'] ) ) {
 						foreach ( $settings['tabs'] as $tab ) {
 							$ids = ! empty( $tab['tab_products'] ) ? array_map( 'intval', (array) $tab['tab_products'] ) : [];
 							?>
@@ -632,8 +781,9 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 						$doses = $this->format_doses( $pid );
 						$price = $this->format_price( $product );
 						$resv  = $this->reserve_url( $product, $settings );
+						$row_filters = array_filter( array_map( 'trim', (array) get_post_meta( $pid, 'filtry', true ) ) );
 						?>
-						<div class="tz-vac__row" data-id="<?php echo esc_attr( $pid ); ?>" data-name="<?php echo esc_attr( wp_strip_all_tags( $title ) ); ?>">
+						<div class="tz-vac__row" data-id="<?php echo esc_attr( $pid ); ?>" data-name="<?php echo esc_attr( wp_strip_all_tags( $title ) ); ?>" data-filters="<?php echo esc_attr( implode( '|', $row_filters ) ); ?>">
 							<div class="tz-vac__cell tz-vac__name"><?php echo esc_html( $title ); ?></div>
 							<div class="tz-vac__cell tz-vac__doses"><span class="tz-vac__th-m"><?php echo esc_html( $settings['col_dawki'] ); ?></span><?php echo esc_html( $doses ); ?></div>
 							<div class="tz-vac__cell tz-vac__price"><span class="tz-vac__th-m"><?php echo esc_html( $settings['col_cena'] ); ?></span><?php echo esc_html( $price ); ?></div>

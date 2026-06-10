@@ -60,6 +60,8 @@ def convert_szczepienia(wb):
             print(f"  UWAGA: SKU w arkuszu {sheet_sku!r} != oczekiwane {corrected_sku!r} "
                   f"({d['Choroba']} / {miasto or 'Ogólne'}) - importer zapisze {corrected_sku!r}")
         kraje = [k.strip() for k in cell(d.get('Kraje-upsell2')).split(',') if k.strip()]
+        # Filtry (kolumna "Filtry" to konkatenacja tych czterech kolumn)
+        filtry = [cell(d.get(c)) for c in ('Podróżne', 'HPV', 'Dla dzieci', 'Sezonowe') if cell(d.get(c))]
         crosssell = [s.strip() for s in cell(d.get('Cross sell')).split(',') if s.strip()]
         title = f"Szczepienie {cell(d['Choroba'])}" + (f" {miasto}" if miasto else "")
         out.append({
@@ -84,6 +86,7 @@ def convert_szczepienia(wb):
             'cena': cell(d.get('Cena za 1 dawkę')),
             'czas_do_uodpornienia': cell(d.get('Czas do uodpornienia')),
             'kraje': kraje,
+            'filtry': filtry,
             'crosssell_skus': crosssell,
         })
     return out

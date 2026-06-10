@@ -214,6 +214,14 @@ class TZ_Offer_Import {
 			$item['changes']['kraje_upsell'] = [ implode( ', ', $kraje_old ), implode( ', ', array_keys( $kraje_new ) ) ];
 		}
 
+		// filtry - lista etykiet (Podróżne / HPV / Dla dzieci / Sezonowe)
+		$filtry_new = isset( $row['filtry'] ) ? $row['filtry'] : [];
+		$filtry_old = get_post_meta( $post_id, 'filtry', true );
+		$filtry_old = is_array( $filtry_old ) ? array_values( $filtry_old ) : [];
+		if ( $filtry_old !== $filtry_new ) {
+			$item['changes']['filtry'] = [ implode( ', ', $filtry_old ), implode( ', ', $filtry_new ) ];
+		}
+
 		// cross-sell - porównujemy po SKU docelowych
 		$cross_old_ids = get_post_meta( $post_id, '_crosssell_ids', true );
 		$cross_old     = [];
@@ -298,6 +306,13 @@ class TZ_Offer_Import {
 			$kraje[ $k ] = true;
 		}
 		update_post_meta( $post_id, 'kraje_upsell', $kraje );
+
+		$filtry = isset( $row['filtry'] ) ? (array) $row['filtry'] : [];
+		if ( $filtry ) {
+			update_post_meta( $post_id, 'filtry', $filtry );
+		} else {
+			delete_post_meta( $post_id, 'filtry' );
+		}
 
 		$cross_ids = [];
 		foreach ( $row['crosssell_skus'] as $sku ) {

@@ -213,6 +213,9 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -244,6 +247,9 @@
   "cena": "190",
   "czas_do_uodpornienia": "7-14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -467,6 +473,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-22",
    "PO-7",
@@ -509,6 +519,10 @@
    "Zambia",
    "Zimbabwe"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -540,6 +554,9 @@
   "cena": "Bezpłatne",
   "czas_do_uodpornienia": "10 dni",
   "kraje": [],
+  "filtry": [
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -585,6 +602,9 @@
    "Sri Lanka",
    "Wietnam",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "PO-3",
@@ -639,6 +659,10 @@
    "Tajlandia",
    "Kenia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -683,6 +707,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -713,6 +741,10 @@
   "cena": "520",
   "czas_do_uodpornienia": "6 miesięcy",
   "kraje": [],
+  "filtry": [
+   "HPV",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -758,6 +790,10 @@
    "Nepal",
    "Sri Lanka",
    "Wietnam"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "PO-3",
@@ -814,6 +850,10 @@
    "Ukraina",
    "Węgry",
    "Włochy"
+  ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
   ],
   "crosssell_skus": [
    "PO-3",
@@ -912,6 +952,10 @@
    "Zimbabwe",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -958,6 +1002,10 @@
    "Sudan",
    "Sudan Południowy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1003,6 +1051,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1034,6 +1086,9 @@
   "cena": "200",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1065,6 +1120,9 @@
   "cena": "320",
   "czas_do_uodpornienia": "14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1096,6 +1154,9 @@
   "cena": "300",
   "czas_do_uodpornienia": "14-21 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1127,6 +1188,7 @@
   "cena": "830",
   "czas_do_uodpornienia": "do 3 miesięcy",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1158,6 +1220,7 @@
   "cena": "700",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1189,6 +1252,7 @@
   "cena": "80",
   "czas_do_uodpornienia": "Natychmiast",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1256,6 +1320,10 @@
    "Wietnam",
    "Zimbabwe",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "PO-3",
@@ -1480,6 +1548,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-7",
@@ -1701,6 +1773,9 @@
    "Zimbabwe",
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "PO-3",
@@ -1925,6 +2000,10 @@
    "ZjednoczoneEmiratyArabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -1988,6 +2067,10 @@
    "Wybrzeże Kości Słoniowej",
    "Zambia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "PO-3",
    "PO-22",
@@ -2044,6 +2127,9 @@
    "Bangladesz",
    "Chiny",
    "Malezja"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "PO-3",
@@ -2268,6 +2354,9 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -2299,6 +2388,9 @@
   "cena": "190",
   "czas_do_uodpornienia": "7-14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -2522,6 +2614,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-22",
    "LO-7",
@@ -2564,6 +2660,10 @@
    "Zambia",
    "Zimbabwe"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -2595,6 +2695,9 @@
   "cena": "Bezpłatne",
   "czas_do_uodpornienia": "10 dni",
   "kraje": [],
+  "filtry": [
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -2640,6 +2743,9 @@
    "Sri Lanka",
    "Wietnam",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "LO-3",
@@ -2694,6 +2800,10 @@
    "Tajlandia",
    "Kenia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -2738,6 +2848,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -2768,6 +2882,10 @@
   "cena": "520",
   "czas_do_uodpornienia": "6 miesięcy",
   "kraje": [],
+  "filtry": [
+   "HPV",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -2813,6 +2931,10 @@
    "Nepal",
    "Sri Lanka",
    "Wietnam"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "LO-3",
@@ -2869,6 +2991,10 @@
    "Ukraina",
    "Węgry",
    "Włochy"
+  ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
   ],
   "crosssell_skus": [
    "LO-3",
@@ -2967,6 +3093,10 @@
    "Zimbabwe",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3013,6 +3143,10 @@
    "Sudan",
    "Sudan Południowy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3058,6 +3192,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3089,6 +3227,9 @@
   "cena": "200",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3120,6 +3261,9 @@
   "cena": "320",
   "czas_do_uodpornienia": "14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3151,6 +3295,9 @@
   "cena": "300",
   "czas_do_uodpornienia": "14-21 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3182,6 +3329,7 @@
   "cena": "830",
   "czas_do_uodpornienia": "do 3 miesięcy",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3213,6 +3361,7 @@
   "cena": "700",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3244,6 +3393,7 @@
   "cena": "80",
   "czas_do_uodpornienia": "Natychmiast",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -3311,6 +3461,10 @@
    "Wietnam",
    "Zimbabwe",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "LO-3",
@@ -3535,6 +3689,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-7",
@@ -3756,6 +3914,9 @@
    "Zimbabwe",
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "LO-3",
@@ -3980,6 +4141,10 @@
    "ZjednoczoneEmiratyArabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -4043,6 +4208,10 @@
    "Wybrzeże Kości Słoniowej",
    "Zambia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "LO-3",
    "LO-22",
@@ -4099,6 +4268,9 @@
    "Bangladesz",
    "Chiny",
    "Malezja"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "LO-3",
@@ -4323,6 +4495,9 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -4354,6 +4529,9 @@
   "cena": "190",
   "czas_do_uodpornienia": "7-14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -4577,6 +4755,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-22",
    "GD-7",
@@ -4619,6 +4801,10 @@
    "Zambia",
    "Zimbabwe"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -4650,6 +4836,9 @@
   "cena": "Bezpłatne",
   "czas_do_uodpornienia": "10 dni",
   "kraje": [],
+  "filtry": [
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -4695,6 +4884,9 @@
    "Sri Lanka",
    "Wietnam",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "GD-3",
@@ -4749,6 +4941,10 @@
    "Tajlandia",
    "Kenia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -4793,6 +4989,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -4823,6 +5023,10 @@
   "cena": "520",
   "czas_do_uodpornienia": "6 miesięcy",
   "kraje": [],
+  "filtry": [
+   "HPV",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -4868,6 +5072,10 @@
    "Nepal",
    "Sri Lanka",
    "Wietnam"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "GD-3",
@@ -4924,6 +5132,10 @@
    "Ukraina",
    "Węgry",
    "Włochy"
+  ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
   ],
   "crosssell_skus": [
    "GD-3",
@@ -5022,6 +5234,10 @@
    "Zimbabwe",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5068,6 +5284,10 @@
    "Sudan",
    "Sudan Południowy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5113,6 +5333,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5144,6 +5368,9 @@
   "cena": "200",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5175,6 +5402,9 @@
   "cena": "320",
   "czas_do_uodpornienia": "14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5206,6 +5436,9 @@
   "cena": "300",
   "czas_do_uodpornienia": "14-21 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5237,6 +5470,7 @@
   "cena": "830",
   "czas_do_uodpornienia": "do 3 miesięcy",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5268,6 +5502,7 @@
   "cena": "700",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5299,6 +5534,7 @@
   "cena": "80",
   "czas_do_uodpornienia": "Natychmiast",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -5366,6 +5602,10 @@
    "Wietnam",
    "Zimbabwe",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "GD-3",
@@ -5590,6 +5830,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-7",
@@ -5811,6 +6055,9 @@
    "Zimbabwe",
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "GD-3",
@@ -6035,6 +6282,10 @@
    "ZjednoczoneEmiratyArabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -6098,6 +6349,10 @@
    "Wybrzeże Kości Słoniowej",
    "Zambia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "GD-3",
    "GD-22",
@@ -6154,6 +6409,9 @@
    "Bangladesz",
    "Chiny",
    "Malezja"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "GD-3",
@@ -6378,6 +6636,9 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -6409,6 +6670,9 @@
   "cena": "190",
   "czas_do_uodpornienia": "7-14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -6632,6 +6896,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-22",
    "WA-7",
@@ -6674,6 +6942,10 @@
    "Zambia",
    "Zimbabwe"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -6705,6 +6977,9 @@
   "cena": "Bezpłatne",
   "czas_do_uodpornienia": "10 dni",
   "kraje": [],
+  "filtry": [
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -6750,6 +7025,9 @@
    "Sri Lanka",
    "Wietnam",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "WA-3",
@@ -6804,6 +7082,10 @@
    "Tajlandia",
    "Kenia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -6848,6 +7130,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -6878,6 +7164,10 @@
   "cena": "520",
   "czas_do_uodpornienia": "6 miesięcy",
   "kraje": [],
+  "filtry": [
+   "HPV",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -6923,6 +7213,10 @@
    "Nepal",
    "Sri Lanka",
    "Wietnam"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "WA-3",
@@ -6979,6 +7273,10 @@
    "Ukraina",
    "Węgry",
    "Włochy"
+  ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
   ],
   "crosssell_skus": [
    "WA-3",
@@ -7077,6 +7375,10 @@
    "Zimbabwe",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7123,6 +7425,10 @@
    "Sudan",
    "Sudan Południowy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7168,6 +7474,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7199,6 +7509,9 @@
   "cena": "200",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7230,6 +7543,9 @@
   "cena": "320",
   "czas_do_uodpornienia": "14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7261,6 +7577,9 @@
   "cena": "300",
   "czas_do_uodpornienia": "14-21 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7292,6 +7611,7 @@
   "cena": "830",
   "czas_do_uodpornienia": "do 3 miesięcy",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7323,6 +7643,7 @@
   "cena": "700",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7354,6 +7675,7 @@
   "cena": "80",
   "czas_do_uodpornienia": "Natychmiast",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -7421,6 +7743,10 @@
    "Wietnam",
    "Zimbabwe",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "WA-3",
@@ -7645,6 +7971,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-7",
@@ -7866,6 +8196,9 @@
    "Zimbabwe",
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "WA-3",
@@ -8090,6 +8423,10 @@
    "ZjednoczoneEmiratyArabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -8153,6 +8490,10 @@
    "Wybrzeże Kości Słoniowej",
    "Zambia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "WA-3",
    "WA-22",
@@ -8209,6 +8550,9 @@
    "Bangladesz",
    "Chiny",
    "Malezja"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "WA-3",
@@ -8433,6 +8777,9 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -8464,6 +8811,9 @@
   "cena": "190",
   "czas_do_uodpornienia": "7-14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -8687,6 +9037,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-22",
    "OG-7",
@@ -8729,6 +9083,10 @@
    "Zambia",
    "Zimbabwe"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -8760,6 +9118,9 @@
   "cena": "Bezpłatne",
   "czas_do_uodpornienia": "10 dni",
   "kraje": [],
+  "filtry": [
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -8805,6 +9166,9 @@
    "Sri Lanka",
    "Wietnam",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "OG-3",
@@ -8859,6 +9223,10 @@
    "Tajlandia",
    "Kenia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -8903,6 +9271,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -8933,6 +9305,10 @@
   "cena": "520",
   "czas_do_uodpornienia": "6 miesięcy",
   "kraje": [],
+  "filtry": [
+   "HPV",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -8978,6 +9354,10 @@
    "Nepal",
    "Sri Lanka",
    "Wietnam"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "OG-3",
@@ -9034,6 +9414,10 @@
    "Ukraina",
    "Węgry",
    "Włochy"
+  ],
+  "filtry": [
+   "Dla dzieci",
+   "Sezonowe"
   ],
   "crosssell_skus": [
    "OG-3",
@@ -9132,6 +9516,10 @@
    "Zimbabwe",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9178,6 +9566,10 @@
    "Sudan",
    "Sudan Południowy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9223,6 +9615,10 @@
    "Wielka Brytania",
    "Włochy"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9254,6 +9650,9 @@
   "cena": "200",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9285,6 +9684,9 @@
   "cena": "320",
   "czas_do_uodpornienia": "14 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9316,6 +9718,9 @@
   "cena": "300",
   "czas_do_uodpornienia": "14-21 dni",
   "kraje": [],
+  "filtry": [
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9347,6 +9752,7 @@
   "cena": "830",
   "czas_do_uodpornienia": "do 3 miesięcy",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9378,6 +9784,7 @@
   "cena": "700",
   "czas_do_uodpornienia": "14-28 dni",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9409,6 +9816,7 @@
   "cena": "80",
   "czas_do_uodpornienia": "Natychmiast",
   "kraje": [],
+  "filtry": [],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -9476,6 +9884,10 @@
    "Wietnam",
    "Zimbabwe",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "OG-3",
@@ -9700,6 +10112,10 @@
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-7",
@@ -9921,6 +10337,9 @@
    "Zimbabwe",
    "Zjednoczone Emiraty Arabskie",
    "Tajlandia"
+  ],
+  "filtry": [
+   "Dla dzieci"
   ],
   "crosssell_skus": [
    "OG-3",
@@ -10145,6 +10564,10 @@
    "ZjednoczoneEmiratyArabskie",
    "Tajlandia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -10208,6 +10631,10 @@
    "Wybrzeże Kości Słoniowej",
    "Zambia"
   ],
+  "filtry": [
+   "Podróżne",
+   "Dla dzieci"
+  ],
   "crosssell_skus": [
    "OG-3",
    "OG-22",
@@ -10264,6 +10691,9 @@
    "Bangladesz",
    "Chiny",
    "Malezja"
+  ],
+  "filtry": [
+   "Podróżne"
   ],
   "crosssell_skus": [
    "OG-3",
