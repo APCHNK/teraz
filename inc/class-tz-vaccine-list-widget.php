@@ -138,6 +138,29 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 	}
 
 	/**
+	 * Lokalizacje / usługi Booknetic jako opcje SELECT. Tylko w panelu edytora.
+	 *
+	 * @param string $what 'locations' lub 'services'
+	 * @return array id => nazwa
+	 */
+	private function get_booknetic_options( $what ) {
+		$options = [ '' => __( '— bez preselect —', 'teraz' ) ];
+		if ( ! is_admin() ) {
+			return $options;
+		}
+		global $wpdb;
+		$table = $wpdb->prefix . ( 'services' === $what ? 'bkntc_services' : 'bkntc_locations' );
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
+			return $options;
+		}
+		$rows = $wpdb->get_results( "SELECT id, name FROM {$table} WHERE is_active = 1 ORDER BY name" );
+		foreach ( (array) $rows as $row ) {
+			$options[ (string) $row->id ] = $row->name . ' (#' . $row->id . ')';
+		}
+		return $options;
+	}
+
+	/**
 	 * Lista stron (do wyboru strony rezerwacji). Tylko w panelu edytora.
 	 *
 	 * @return array id => title
@@ -485,10 +508,11 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 				'type'    => \Elementor\Controls_Manager::SELECT,
 				'default' => 'product',
 				'options' => [
-					'product' => __( 'Strona produktu', 'teraz' ),
-					'cart'    => __( 'Dodaj do koszyka', 'teraz' ),
-					'page'    => __( 'Strona rezerwacji', 'teraz' ),
-					'custom'  => __( 'Własny link', 'teraz' ),
+					'product'   => __( 'Strona produktu', 'teraz' ),
+					'cart'      => __( 'Dodaj do koszyka', 'teraz' ),
+					'page'      => __( 'Strona rezerwacji', 'teraz' ),
+					'booknetic' => __( 'Booknetic (preselect lokalizacji/usługi)', 'teraz' ),
+					'custom'    => __( 'Własny link', 'teraz' ),
 				],
 			]
 		);
@@ -500,7 +524,31 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 				'type'        => \Elementor\Controls_Manager::SELECT2,
 				'label_block' => true,
 				'options'     => $this->get_page_options(),
-				'condition'   => [ 'reserve_action' => 'page' ],
+				'condition'   => [ 'reserve_action' => [ 'page', 'booknetic' ] ],
+			]
+		);
+
+		$this->add_control(
+			'booknetic_location',
+			[
+				'label'       => __( 'Lokalizacja (Booknetic)', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SELECT,
+				'default'     => '',
+				'options'     => $this->get_booknetic_options( 'locations' ),
+				'description' => __( 'Przekazywana jako ?location= - Booknetic pomija ten krok.', 'teraz' ),
+				'condition'   => [ 'reserve_action' => 'booknetic' ],
+			]
+		);
+
+		$this->add_control(
+			'booknetic_service',
+			[
+				'label'       => __( 'Usługa (Booknetic)', 'teraz' ),
+				'type'        => \Elementor\Controls_Manager::SELECT,
+				'default'     => '',
+				'options'     => $this->get_booknetic_options( 'services' ),
+				'description' => __( 'Przekazywana jako ?service= - Booknetic pomija ten krok.', 'teraz' ),
+				'condition'   => [ 'reserve_action' => 'booknetic' ],
 			]
 		);
 
@@ -585,10 +633,22 @@ class TZ_Vaccine_List_Widget extends \Elementor\Widget_Base {
 			return method_exists( $product, 'add_to_cart_url' ) ? $product->add_to_cart_url() : get_permalink( $product->get_id() );
 		}
 
-		if ( 'page' === $action ) {
+		if ( 'page' === $action || 'booknetic' === $action ) {
 			$page_id = ! empty( $settings['reserve_page'] ) ? (int) $settings['reserve_page'] : 0;
 			$url     = $page_id ? get_permalink( $page_id ) : '';
-			return $url ? $url : '#';
+			if ( ! $url ) {
+				return '#';
+			}
+			if ( 'booknetic' === $action ) {
+				// Booknetic czyta te parametry z URL i pomija odpowiednie kroki.
+				if ( ! empty( $settings['booknetic_location'] ) ) {
+					$url = add_query_arg( 'location', (int) $settings['booknetic_location'], $url );
+				}
+				if ( ! empty( $settings['booknetic_service'] ) ) {
+					$url = add_query_arg( 'service', (int) $settings['booknetic_service'], $url );
+				}
+			}
+			return $url;
 		}
 
 		if ( 'custom' === $action ) {
