@@ -1524,5 +1524,7 @@ function tz_skip_lazy_for_lcp( $content ) {
 		$content
 	);
 }
-add_filter( 'the_content', 'tz_skip_lazy_for_lcp', 12 );
-add_filter( 'elementor/frontend/the_content', 'tz_skip_lazy_for_lcp', 12 );
+// Priorytet 13: fetchpriority dodaje wp_filter_content_tags, który bywa
+// ponownie rejestrowany w ramach priorytetu 12 PO motywie - na 12 nasz
+// filtr widział content jeszcze bez fetchpriority.
+add_filter( 'the_content', 'tz_skip_lazy_for_lcp', 13 );
