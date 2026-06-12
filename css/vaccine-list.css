@@ -445,7 +445,7 @@
 	}
 
 	.tz-vac__name {
-		font-size: 17px;
+		font-size: 15px;
 		line-height: 1;
 	}
 
@@ -477,6 +477,7 @@
 	.tz-vac__btn {
 		flex: 1 1 auto;
 		padding: 12px 18px;
+		font-size: 14px;
 	}
 	.tz-vac__tabs {
 		flex-wrap: wrap;
