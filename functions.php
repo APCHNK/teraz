@@ -1507,3 +1507,22 @@ function tz_booknetic_preselect_rewrite( $content ) {
 }
 add_filter( 'the_content', 'tz_booknetic_preselect_rewrite', 99 );
 add_filter( 'elementor/frontend/the_content', 'tz_booknetic_preselect_rewrite', 99 );
+
+/**
+ * LCP: obrazy oznaczone przez WordPress jako fetchpriority="high" (kandydat
+ * LCP na stronie) nie mogą być lazy-loadowane przez LiteSpeed - JS-owe
+ * podstawianie src opóźniało LCP o ~1.3s. LiteSpeed pomija obrazy
+ * z atrybutem data-skip-lazy (media.cls.php).
+ */
+function tz_skip_lazy_for_lcp( $content ) {
+	if ( ! is_string( $content ) || strpos( $content, 'fetchpriority="high"' ) === false ) {
+		return $content;
+	}
+	return preg_replace(
+		'/<img\b(?![^>]*\bdata-skip-lazy)([^>]*\bfetchpriority="high")/i',
+		'<img data-skip-lazy="1"$1',
+		$content
+	);
+}
+add_filter( 'the_content', 'tz_skip_lazy_for_lcp', 12 );
+add_filter( 'elementor/frontend/the_content', 'tz_skip_lazy_for_lcp', 12 );
